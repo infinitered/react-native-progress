@@ -1,5 +1,8 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import React, {
+  Component,
+  PropTypes,
+} from 'react';
+
 import {
   Animated,
   Easing,
@@ -23,6 +26,7 @@ export default class ProgressBar extends Component {
     style: View.propTypes.style,
     unfilledColor: PropTypes.string,
     width: PropTypes.number,
+    backgroundColor: PropTypes.string
   };
 
   static defaultProps = {
@@ -34,6 +38,7 @@ export default class ProgressBar extends Component {
     indeterminate: false,
     progress: 0,
     width: 150,
+    backgroundColor: 'white'
   };
 
   constructor(props) {
@@ -106,6 +111,7 @@ export default class ProgressBar extends Component {
       style,
       unfilledColor,
       width,
+      backgroundColor,
       ...restProps
     } = this.props;
 
@@ -137,9 +143,21 @@ export default class ProgressBar extends Component {
       }],
     };
 
+    const fixCircleClipping = {
+      position: 'absolute',
+      top: -borderRadius,
+      bottom: -borderRadius,
+      right: -borderRadius,
+      left: -borderRadius,
+      borderRadius: height / 2 + borderRadius / 2,
+      borderWidth: borderRadius,
+      borderColor: backgroundColor
+    };
+
     return (
       <View style={[containerStyle, style]} {...restProps}>
         <Animated.View style={progressStyle} />
+        <View style={fixCircleClipping}/>
         {children}
       </View>
     );
